@@ -9,7 +9,7 @@ def group_by_owners(files: dict) -> dict:
     return by_owners
 
 
-class DictMixin:
+class DictHelper:
     def __init__(self, container: dict):
         self.container = container
 
@@ -22,9 +22,10 @@ class DictMixin:
 
             by_value[value].append(key)
         return by_value
-
-    def __len__(self):
-        return len(self.container.keys())
+    
+    def extend(self, **kwargs):
+        self.container.update(**kwargs)
+        return self.container
 
 
 def main():
@@ -35,9 +36,12 @@ def main():
         "index.html": "Randy",
     }
     print(group_by_owners(files))
-    dic_helper = DictMixin(files)
-    print(dic_helper.group_by_value())
-    print(len(dic_helper))
+    helper = DictHelper(files)
+    print(helper.group_by_value())
+    
+    print(files.pop("index.html"))
+    print(files)
+    print(helper.extend(test="test", ))
 
 
 if __name__ == "__main__":
